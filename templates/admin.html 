@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - المطور</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="glass-container">
+        <header class="header">
+            <div class="logo">
+                <h1>لوحة <span>التحكم</span></h1>
+            </div>
+            <div class="user-menu">
+                <a href="{{ url_for('index') }}" class="tool-btn">
+                    <i class="fas fa-arrow-right"></i> العودة للموقع
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-stats">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>إجمالي المستخدمين</h3>
+                <p>{{ users_count }}</p>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-comments"></i>
+                <h3>إجمالي المحادثات</h3>
+                <p>{{ conversations_count }}</p>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-envelope"></i>
+                <h3>إجمالي الرسائل</h3>
+                <p>{{ messages_count }}</p>
+            </div>
+        </div>
+
+        <h2 style="margin: 30px 0 20px;">آخر المستخدمين</h2>
+        
+        <table style="width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.2); border-radius: 15px; overflow: hidden;">
+            <thead>
+                <tr style="background: rgba(0,0,0,0.3);">
+                    <th style="padding: 15px;">المعرف</th>
+                    <th style="padding: 15px;">اسم المستخدم</th>
+                    <th style="padding: 15px;">البريد</th>
+                    <th style="padding: 15px;">تاريخ التسجيل</th>
+                    <th style="padding: 15px;">الأسئلة اليومية</th>
+                    <th style="padding: 15px;">مدير</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in recent_users %}
+                <tr style="border-top: 1px solid rgba(255,255,255,0.1);">
+                    <td style="padding: 15px; text-align: center;">{{ user.id }}</td>
+                    <td style="padding: 15px; text-align: center;">{{ user.username }}</td>
+                    <td style="padding: 15px; text-align: center;">{{ user.email }}</td>
+                    <td style="padding: 15px; text-align: center;">{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td style="padding: 15px; text-align: center;">{{ user.daily_questions }}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        {% if user.is_admin %}
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        {% else %}
+                        <i class="fas fa-times-circle" style="color: var(--danger);"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
